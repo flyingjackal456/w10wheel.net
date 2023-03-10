@@ -104,7 +104,7 @@ let main argv =
 
     Ctx.loadPropertiesFileOnly ()
     checkDoubleLaunch ()
-    checkAdmin ()
+    //checkAdmin ()
 
     SystemEvents.SessionEnding.Add (fun _ -> procExit())
     initSetFunctions ()
