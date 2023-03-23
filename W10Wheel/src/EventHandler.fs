@@ -157,8 +157,10 @@ let private passPressedScrollMode (down: MouseEvent): nativeint option =
 let private matchAvastUI (pathOpt: string option): bool =
     match pathOpt with
     | Some (path) -> path.EndsWith("\\AvastUI.exe")
-    | Some (path) -> path.EndsWith("\\ugraf.exe")
-    | Some (path) -> path.EndsWith("\\Teamcenter.exe")
+    //| Some (path) -> path.EndsWith("\\Teamcenter.exe")
+    //| Some (path) -> path.EndsWith("\\ugraf.exe")
+    //| Some (path) -> path.EndsWith("\\SLDWORKS.exe")
+    //| Some (path) -> path.EndsWith("\\Simplify3D.exe")
     //| Some (path) -> path.EndsWith("\\chrome.exe") // for Debug
     | None -> false
 
