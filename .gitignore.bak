@@ -3,7 +3,9 @@
 *.sln.docstates
 
 .vs
+W10Wheel/bin_del/
 W10Wheel/bin/
 W10Wheel/obj/
 
-.fake
+.fake/obj/
+/bin/
