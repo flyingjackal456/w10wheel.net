@@ -54,8 +54,8 @@
     let passMode = "passMode"
     [<Literal>]
     let excludeAvast = "excludeAvast"
-    
-    // String
+    [<Literal>]
+    let excludedApps = "excludedApps"  // String for comma-separated list of excluded apps
     [<Literal>]
     let firstTrigger = "firstTrigger"
     [<Literal>]
@@ -180,4 +180,3 @@
     let English = "en"
     [<Literal>]
     let Japanese = "ja"
-

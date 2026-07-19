@@ -38,6 +38,8 @@ let private uiLanguage = ref (Locale.getLanguage())
 
 let private dragThreshold = ref 0
 
+let private excludedApps = ref ""
+
 type MenuDict = Dictionary<string, ToolStripMenuItem>
 
 let private boolMenuDict = new MenuDict()
@@ -66,6 +68,9 @@ let isNoneTriggerKey () =
 
 let isSendMiddleClick () =
     Volatile.Read(sendMiddleClick)
+
+let getExcludedApps () =
+    Volatile.Read(excludedApps)
 
 let private notifyIcon = new System.Windows.Forms.NotifyIcon()
 
@@ -1275,6 +1280,16 @@ let convLangWithProp (msg: string) =
     Debug.WriteLine((sprintf "convLangWithProp: lang:[%s], msg:[%s]" lang msg))
     Locale.convLang lang msg
 
+let private setExcludedAppsOfProperty () =
+    try
+        let apps = prop.GetString(DataID.excludedApps)
+        Volatile.Write(excludedApps, apps)
+    with
+        | :? KeyNotFoundException ->
+            // If the property doesn't exist, use default value (maintains backward compatibility)
+            Volatile.Write(excludedApps, Properties.DEFAULT_EXCLUDED_APPS)
+        | e -> Debug.WriteLine("setExcludedAppsOfProperty: " + (e.ToString()))
+
 let loadProperties (update:bool): unit =
     loaded <- true
     try
@@ -1288,6 +1303,7 @@ let loadProperties (update:bool): unit =
         setVKCodeOfProperty()
         setVhAdjusterMethodOfProperty()
         setUILanguageOfProperty()
+        setExcludedAppsOfProperty()
 
         BooleanNames |> Array.iter (fun n -> setBooleanOfProperty n)
         WinHook.setOrUnsetKeyboardHook (Volatile.Read(keyboardHook))
@@ -1356,6 +1372,14 @@ let storeProperties () =
 
             BooleanNames |> Array.iter (fun n -> prop.SetBool(n, (getBooleanOfName n)))
             NumberNames |> Array.iter (fun n -> prop.SetInt(n, (getNumberOfName n)))
+
+            // Store excluded apps property - ensure default gets written if blank
+            let apps = getExcludedApps()
+            if apps = "" then
+                // If no apps are explicitly configured, write the default
+                prop.SetProperty(DataID.excludedApps, Properties.DEFAULT_EXCLUDED_APPS)
+            else
+                prop.SetProperty(DataID.excludedApps, apps)
 
             prop.Store(getSelectedPropertiesPath())
     with

@@ -156,20 +156,25 @@ let private passPressedScrollMode (down: MouseEvent): nativeint option =
 
 let private matchAvastUI (pathOpt: string option): bool =
     match pathOpt with
-    | Some (path) -> path.EndsWith("\\AvastUI.exe")
-    //| Some (path) -> path.EndsWith("\\Teamcenter.exe")
-    //| Some (path) -> path.EndsWith("\\ugraf.exe")
-    //| Some (path) -> path.EndsWith("\\SLDWORKS.exe")
-    //| Some (path) -> path.EndsWith("\\Simplify3D.exe")
-    //| Some (path) -> path.EndsWith("\\chrome.exe") // for Debug
+    | Some (path) -> 
+        // If the excludeAvast toggle is enabled, check against the configurable list
+        let excludedApps = Ctx.getExcludedApps()
+        if Ctx.isExcludeAvast() && excludedApps <> "" then
+            let appNames = excludedApps.Split(',')
+            appNames |> Array.exists (fun appName -> path.EndsWith("\\" + appName))
+        elif Ctx.isExcludeAvast() then
+            // Default behavior for backward compatibility when no custom apps specified
+            path.EndsWith("\\AvastUI.exe")
+        else
+            false
     | None -> false
 
 let private skipExcludeWindow (down: MouseEvent): nativeint option =
     if Ctx.isExcludeAvast() then
-        //let pt_match = matchAvastUI(Windows.getFullPathFromCursorPos()) // for DPI scaling
+        // Check if the foreground window matches any excluded applications
         let fw_match = matchAvastUI(Windows.getFullPathFromForegroundWindow())
         if fw_match then
-            debug "pass avast" down
+            debug "pass excluded app" down
             Ctx.LastFlags.SetPassed(down)
             callNextHook()
         else

@@ -141,3 +141,5 @@ let copy (srcName:string) (destName:string): unit =
 let delete (name:string): unit =
     File.Delete(getPath name)
 
+// New property for excluded applications
+let DEFAULT_EXCLUDED_APPS = "AvastUI.exe,Teamcenter.exe,ugraf.exe"

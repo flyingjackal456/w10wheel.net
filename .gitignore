@@ -16,7 +16,6 @@
 bin/
 obj/
 *.exe
-*.dll
 *.pdb
 *.xml
 *.cache
