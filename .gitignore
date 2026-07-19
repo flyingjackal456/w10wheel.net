@@ -1,10 +1,51 @@
-*.suo
+# Visual Studio 2019
 *.user
+*.userosscache
+*.suo
+*.vs
+*.vscode
+*._assembly
+*._core
+*.ndeb
+*.nupkg
+*.pdb
+*.pidb
 *.sln.docstates
 
-.vs
-W10Wheel/bin_del/
-W10Wheel/bin/
-W10Wheel/obj/
+# Binaries
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+*.xml
+*.cache
+*.log
 
-.fake
+# F# project specific
+*.fsi
+*.fsx
+*.fsscript
+*.fsharp
+*~*
+
+# Packages and NuGet
+packages/
+*.nupkg
+*.nuspec
+*.target
+
+# IDE & OS
+.DS_Store
+Thumbs.db
+*.swp
+.*.swp
+~*
+.*.tmp
+
+# Distribution
+dist/
+
+# Other
+*.bak
+*.old
